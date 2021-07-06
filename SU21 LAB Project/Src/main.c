@@ -488,7 +488,7 @@ void GUI_AppDraw( BOOL bFrameStart )
 		GUI_SetFont( &FONT_Arialbold12 );
 		sprintf( buf, "Pin Entered %i", KI_Digits);
 		GUI_PrintString( buf, ClrBlack, 15, 108 );
-		sprintf( buf, "Setup Failed"); //Default Door is Locked
+		sprintf( buf, "Setup in Progress"); //Default Door is Locked
 		GUI_PrintString( buf, ClrBlack, 15, 120 );
 		
 	}
@@ -691,8 +691,7 @@ uint8_t LCD_Count ( uint16_t count )		/* Switch case for 7 segment display */
 					}
 				}
 		}
-		else //Unlock and Lock
-		{
+	
 			if( numPos < 5 && !g_bKeyPressed )  /* Data in managed in 2 parts, checking for rotational direction, then saving the turn angle */
 			{  
 				if(bKeyPressed)									/* local variable is used to prevent multiple inputs while the key is being held down */
@@ -724,12 +723,8 @@ uint8_t LCD_Count ( uint16_t count )		/* Switch case for 7 segment display */
 								
 				}
 			}
-		}
-				
 		
-		
-				
-				
+							
 				/* Check if key is released */
 			if(input == 0x07)
 			{
@@ -737,20 +732,7 @@ uint8_t LCD_Count ( uint16_t count )		/* Switch case for 7 segment display */
 			}
 			/* Reset all rows for next key detection */
 			KEYPAD_ALL_ROWS_OFF();
-				
-
-				
-				
-				
-				
-				/* Check if key is released */
-				if(input == 0x07)
-				{
-					g_bKeyPressed = FALSE;						//Change Flag to False		
-				}
-			
-				/* Reset all rows for next key detection */
-				KEYPAD_ALL_ROWS_OFF();		
+					
 }
 
 void motor_output (int state)
@@ -797,7 +779,7 @@ void GPIOE_Button_IRQHandler( uint32_t Status )
 		if( g_BounceThresh == 0)
 		{
 			g_BounceThresh = g_DebounceValue;
-		GPIOE->ICR = BIT(PE_KEYPAD_COL1);
+			GPIOE->ICR = BIT(PE_KEYPAD_COL1);
 		}
 	}
 	if( 0 != (Status&BIT(PE_KEYPAD_COL2)) )
@@ -805,7 +787,7 @@ void GPIOE_Button_IRQHandler( uint32_t Status )
 		if( g_BounceThresh == 0)
 		{
 			g_BounceThresh = g_DebounceValue;
-		GPIOE->ICR = BIT(PE_KEYPAD_COL2);
+			GPIOE->ICR = BIT(PE_KEYPAD_COL2);
 		}
 	}
 }
