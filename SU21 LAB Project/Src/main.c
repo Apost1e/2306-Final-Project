@@ -193,12 +193,9 @@ static volatile BOOL g_bDirectional_Op = FALSE;
 static BOOL								SW1_Pressed = FALSE;  /* switch-pressed status  */
 static BOOL								SW2_Pressed = FALSE; 
 
-static volatile BOOL  		b_keyin = FALSE; //Keyed-in Digits (Set up Flag)
 static volatile int				KI_Digits_Counter = 0;	//Keyin Digits counter
 static volatile int				KI_Digits = 0;	//Keyed-in Digits (Set up)
-static int 								DoorStatus =	CW; //Keyed-in Digits (Set up)
 static volatile int				Validate_KI_Digits = 0;	//Keyed-in Digits (Unlocking and Locking of Door)
-static int 								Validate_DoorStatus =	CW; //Keyed-in Digits (Unlocking and Locking of Door)
 static volatile int				Tries = 5;	//Number of tries
 static volatile int				Tries_Counter = 0;	//Tryouts
 static volatile BOOL  		SetUpDone = FALSE;
@@ -347,11 +344,15 @@ int main()
 			}
 		}
 	
+	if(SetUpDone == FALSE)
+	{
 		if( FALSE != g_nKeypadScan )
 		{
 			g_nKeypadScan = FALSE;
 			main_KeyScan();
 		}
+	}
+	
 	
 		
 	
@@ -482,24 +483,18 @@ void GUI_AppDraw( BOOL bFrameStart )
 	GUI_PrintString( buf, ClrDarkBlue, 10, 84);
 	
 	//Setup
-	
+	if(SetUpDone == FALSE)
+	{
 		GUI_SetFont( &FONT_Arialbold12 );
 		sprintf( buf, "Pin Entered %i", KI_Digits);
 		GUI_PrintString( buf, ClrBlack, 15, 108 );
-		if (SetUpDone == FALSE)
-		{
-		sprintf( buf, "Setup Failed");
+		sprintf( buf, "Setup Failed"); //Default Door is Locked
 		GUI_PrintString( buf, ClrBlack, 15, 120 );
-		}
-		else
-		{
-			sprintf( buf, "Setup is Done"); 
-			GUI_PrintString( buf, ClrBlack, 15, 120 );
-		}
 		
-	
-	/*
-	if(b_keyin == TRUE)
+	}
+		
+	//After Setup
+	if(SetUpDone == TRUE)
 	{
 		GUI_SetFont( &FONT_Arialbold12 );
 		sprintf( buf, "Pin Entered %i", Validate_KI_Digits);
@@ -507,8 +502,9 @@ void GUI_AppDraw( BOOL bFrameStart )
 		sprintf( buf, "Door is Currently Locked"); 
 		GUI_PrintString( buf, ClrBlack, 15, 120 );
 	}
-
-	//Pins Matched	/*
+	
+	/*
+	//Pins Matched	
 	if(Validate_KI_Digits == KI_Digits && Validate_DoorStatus == DoorStatus)
 	{
 		GUI_PrintString( buf, ClrBlack, 15, 108 );
@@ -624,7 +620,7 @@ uint8_t LCD_Count ( uint16_t count )		/* Switch case for 7 segment display */
 		static BOOL bKeyPressed = FALSE;
 
 	
-	
+
 			//Start up and User keys in the pin number
 			KEYPAD_ALL_ROWS_ON();
 
@@ -661,7 +657,8 @@ uint8_t LCD_Count ( uint16_t count )		/* Switch case for 7 segment display */
 				/* If a column is asserted, then look for the corresponding key 
 				Make use of the KEY_DECODE_TABLE, exit loop once key found!  */	
 			}
-		
+		if(SetUpDone == FALSE)
+		{
 				if( KI_Digits_Counter < 5 && !g_bKeyPressed )  /* Data in managed in 2 parts, checking for rotational direction, then saving the turn angle */
 				{  
 					if(bKeyPressed)									/* local variable is used to prevent multiple inputs while the key is being held down */
@@ -679,22 +676,71 @@ uint8_t LCD_Count ( uint16_t count )		/* Switch case for 7 segment display */
 							}
 							
 						}
-						
+						//4 Digits 
 						if( KI_Digits_Counter < 4)
 						{
 							if( g_cKey != '#' && g_cKey != '*')				/* Guard statement*/
 							{
-							KI_Digits*=10;												/* Shifts the numbers left in decimal form (factor 10)*/
-							KI_Digits += g_cKey;									/* Adds current value to angle */
-							KI_Digits_Counter++;									/* Tracks current digit length */
+								KI_Digits*=10;												/* Shifts the numbers left in decimal form (factor 10)*/
+								KI_Digits += g_cKey;									/* Adds current value to angle */
+								KI_Digits_Counter++;									/* Tracks current digit length */
 							}
 						}
 					
 								
 					}
 				}
+		}
+		else //Unlock and Lock
+		{
+			if( numPos < 5 && !g_bKeyPressed )  /* Data in managed in 2 parts, checking for rotational direction, then saving the turn angle */
+			{  
+				if(bKeyPressed)									/* local variable is used to prevent multiple inputs while the key is being held down */
+				{
+					bKeyPressed = FALSE;
+						
+					//BackSpace
+					if(g_cKey == '*')
+					{
+						numPos--;
+									
+						if(numPos >= 0)
+						{
+							Validate_KI_Digits/=10;
+						}
+							
+					}
+					//4 Digits 
+					if( numPos < 4)
+					{
+						if( g_cKey != '#' && g_cKey != '*')				/* Guard statement*/
+						{
+							Validate_KI_Digits*=10;									/* Shifts the numbers left in decimal form (factor 10)*/
+							Validate_KI_Digits += g_cKey;						/* Adds current value to angle */
+							numPos++;																/* Tracks current digit length */
+						}
+					}
+					
+								
+				}
+			}
+		}
 				
-				b_keyin = TRUE;//Flag to state that setup pin is Done
+		
+		
+				
+				
+				/* Check if key is released */
+			if(input == 0x07)
+			{
+				g_bKeyPressed = FALSE;						//Change Flag to False	
+			}
+			/* Reset all rows for next key detection */
+			KEYPAD_ALL_ROWS_OFF();
+				
+
+				
+				
 				
 				
 				/* Check if key is released */
@@ -704,8 +750,7 @@ uint8_t LCD_Count ( uint16_t count )		/* Switch case for 7 segment display */
 				}
 			
 				/* Reset all rows for next key detection */
-				KEYPAD_ALL_ROWS_OFF();
-			
+				KEYPAD_ALL_ROWS_OFF();		
 }
 
 void motor_output (int state)
@@ -722,14 +767,14 @@ void GPIOF_Button_IRQHandler( uint32_t Status )
 		{
 			KI_Digits_Counter = 0;
 			KI_Digits = 0;
+			SetUpDone = FALSE;
 		}
 		if( 0 != (Status & BIT(PF_SW1) ))
 	{
 		if(g_debounce <= 0)
 		{
 			g_debounce = 150;
-			SetUpDone = TRUE;
-			
+			SetUpDone = TRUE;	
 		}
 	}
 	GPIOF->ICR |= BIT(PF_SW1)|BIT(PF_SW2); /* clear intr  */	
