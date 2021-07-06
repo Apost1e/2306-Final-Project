@@ -1,0 +1,23 @@
+SEM2306 Lab Assignment: (SU21)
+
+1. Count-Down Timer:
+- The two 7-segment displays are used to display the value of the count-down timer. Count values can range from 00 to 99.
+- Upon initial power-up, the 7-segment display should display 2 decimal points.
+- Count-Down Timer operates in 3 Modes:
+   - SET: default mode upon power up; mode is used to set the count-down start value.
+   - COUNT-DOWN: timer counts down by one count every 0.5s.
+   - STOP: time stops counting.
+- SW1 is used to set the initial count down value (SET) or stop the count-down (STOP)
+   - Each press SW1 should increment the count-down timer value by 1. When the value reaches 99 (max), it should stay at 99. 
+   - While in COUNT-DOWN mode, pressing SW1 once should stop the count down (STOP).
+- SW2 is used to start the count-down (COUNT_DOWN mode). 
+   - When the count-down values reaches 00, it should stop and stay at 00. It then enters into STOP mode.
+- Each count-down display change should be followed by a short buzzer beep.
+- Display the Count-Down Timer value & mode on the LCD screen.
+
+2. Temperature & Humidity Values:
+- Read and update the temperature & humidity data from the AHT10 module every 5 seconds.
+- Display the temperature & humidity values on the TFT LCD screen.
+
+3. Blink the colour LED (any colour) to indicate the program running.
+4. Display the System clock speed & Time-from-Start of your programming running (already in the template program).

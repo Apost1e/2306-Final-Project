@@ -1,0 +1,210 @@
+Dependencies for Project 'SEM2306_Lab_Assignment', Target 'Debug': (DO NOT MODIFY !)
+CompilerVersion: 5060960::V5.06 update 7 (build 960)::.\ARMCC
+F (..\Src\main.c)(0x60DD33E1)(--c99 -c --cpu Cortex-M4.fp.sp -D__EVAL -g -O0 --apcs=interwork --split_sections -I ..\Src\BSP -I ..\Src\BSP\I2C -I ..\Src\BSP\MCU -I ..\Src\BSP\SPI -I ..\Src\App\LCD -I ..\Src\App\LED -I ..\Lib\Inc -I ..\Lib\TIMER-I.\RTE\_Debug-IC:\Users\User\AppData\Local\Arm\Packs\ARM\CMSIS\5.7.0\CMSIS\Core\Include-IC:\Users\User\AppData\Local\Arm\Packs\Keil\TM4C_DFP\1.1.0\Device\Include\TM4C123-D__UVISION_VERSION="534" -D_RTE_ -DTM4C123GH6PM -D_RTE_-o .\objects\main.o --omf_browse .\objects\main.crf --depend .\objects\main.d)
+I (..\Lib\Inc\Common.h)(0x60D16483)
+I (C:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x5E8E3CC2)
+I (C:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x5E8E3CC2)
+I (C:\Keil_v5\ARM\ARMCC\include\stdlib.h)(0x5E8E3CC2)
+I (C:\Keil_v5\ARM\ARMCC\include\stdarg.h)(0x5E8E3CC2)
+I (C:\Keil_v5\ARM\ARMCC\include\string.h)(0x5E8E3CC2)
+I (..\Src\BSP\MCU\TM4C123GH6PM7.h)(0x60D1649E)
+I (C:\Users\User\AppData\Local\Arm\Packs\ARM\CMSIS\5.7.0\CMSIS\Core\Include\core_cm4.h)(0x5E8ED122)
+I (C:\Users\User\AppData\Local\Arm\Packs\ARM\CMSIS\5.7.0\CMSIS\Core\Include\cmsis_version.h)(0x5E8ED122)
+I (C:\Users\User\AppData\Local\Arm\Packs\ARM\CMSIS\5.7.0\CMSIS\Core\Include\cmsis_compiler.h)(0x5E8306C2)
+I (C:\Users\User\AppData\Local\Arm\Packs\ARM\CMSIS\5.7.0\CMSIS\Core\Include\cmsis_armcc.h)(0x5E8ED122)
+I (C:\Users\User\AppData\Local\Arm\Packs\ARM\CMSIS\5.7.0\CMSIS\Core\Include\mpu_armv7.h)(0x5E8ED122)
+I (..\Src\BSP\MCU\system_TM4C123.h)(0x60D1649E)
+I (..\Src\BSP\Hal.h)(0x60D1649E)
+I (..\Src\BSP\BSP.h)(0x60D16484)
+I (..\Src\App\LED\LED.h)(0x60D16483)
+I (..\Src\BSP\IRQ.h)(0x60D1649E)
+I (..\Src\BSP\SPI\spim.h)(0x60D1649E)
+I (..\Src\App\LCD\LCD_ST7735R.h)(0x60D16483)
+I (..\Src\App\LCD\gui.h)(0x60D16483)
+I (..\Src\BSP\I2C\i2c.h)(0x60D1649E)
+I (..\Src\BSP\I2C\i2c_sensors.h)(0x60D1649E)
+I (..\Lib\TIMER\timer.h)(0x60D16483)
+F (..\Src\App\LED\LED.h)(0x60D16483)()
+F (..\Src\App\LCD\DPGUI_KEIL_CM4_V11.lib)(0x60D16483)()
+F (..\Src\App\LCD\LCD_ST7735R.c)(0x60D16483)(--c99 -c --cpu Cortex-M4.fp.sp -D__EVAL -g -O0 --apcs=interwork --split_sections -I ..\Src\BSP -I ..\Src\BSP\I2C -I ..\Src\BSP\MCU -I ..\Src\BSP\SPI -I ..\Src\App\LCD -I ..\Src\App\LED -I ..\Lib\Inc -I ..\Lib\TIMER-I.\RTE\_Debug-IC:\Users\User\AppData\Local\Arm\Packs\ARM\CMSIS\5.7.0\CMSIS\Core\Include-IC:\Users\User\AppData\Local\Arm\Packs\Keil\TM4C_DFP\1.1.0\Device\Include\TM4C123-D__UVISION_VERSION="534" -D_RTE_ -DTM4C123GH6PM -D_RTE_-o .\objects\lcd_st7735r.o --omf_browse .\objects\lcd_st7735r.crf --depend .\objects\lcd_st7735r.d)
+I (..\Lib\Inc\Common.h)(0x60D16483)
+I (C:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x5E8E3CC2)
+I (C:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x5E8E3CC2)
+I (C:\Keil_v5\ARM\ARMCC\include\stdlib.h)(0x5E8E3CC2)
+I (C:\Keil_v5\ARM\ARMCC\include\stdarg.h)(0x5E8E3CC2)
+I (C:\Keil_v5\ARM\ARMCC\include\string.h)(0x5E8E3CC2)
+I (..\Src\BSP\MCU\TM4C123GH6PM7.h)(0x60D1649E)
+I (C:\Users\User\AppData\Local\Arm\Packs\ARM\CMSIS\5.7.0\CMSIS\Core\Include\core_cm4.h)(0x5E8ED122)
+I (C:\Users\User\AppData\Local\Arm\Packs\ARM\CMSIS\5.7.0\CMSIS\Core\Include\cmsis_version.h)(0x5E8ED122)
+I (C:\Users\User\AppData\Local\Arm\Packs\ARM\CMSIS\5.7.0\CMSIS\Core\Include\cmsis_compiler.h)(0x5E8306C2)
+I (C:\Users\User\AppData\Local\Arm\Packs\ARM\CMSIS\5.7.0\CMSIS\Core\Include\cmsis_armcc.h)(0x5E8ED122)
+I (C:\Users\User\AppData\Local\Arm\Packs\ARM\CMSIS\5.7.0\CMSIS\Core\Include\mpu_armv7.h)(0x5E8ED122)
+I (..\Src\BSP\MCU\system_TM4C123.h)(0x60D1649E)
+I (..\Src\BSP\Hal.h)(0x60D1649E)
+I (..\Src\BSP\SPI\spim.h)(0x60D1649E)
+I (..\Src\App\LCD\LCD_ST7735R.h)(0x60D16483)
+I (..\Src\App\LCD\gui.h)(0x60D16483)
+F (..\Src\App\LCD\fontarialbold16.c)(0x60D16483)(--c99 -c --cpu Cortex-M4.fp.sp -D__EVAL -g -O0 --apcs=interwork --split_sections -I ..\Src\BSP -I ..\Src\BSP\I2C -I ..\Src\BSP\MCU -I ..\Src\BSP\SPI -I ..\Src\App\LCD -I ..\Src\App\LED -I ..\Lib\Inc -I ..\Lib\TIMER-I.\RTE\_Debug-IC:\Users\User\AppData\Local\Arm\Packs\ARM\CMSIS\5.7.0\CMSIS\Core\Include-IC:\Users\User\AppData\Local\Arm\Packs\Keil\TM4C_DFP\1.1.0\Device\Include\TM4C123-D__UVISION_VERSION="534" -D_RTE_ -DTM4C123GH6PM -D_RTE_-o .\objects\fontarialbold16.o --omf_browse .\objects\fontarialbold16.crf --depend .\objects\fontarialbold16.d)
+I (..\Lib\Inc\Common.h)(0x60D16483)
+I (C:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x5E8E3CC2)
+I (C:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x5E8E3CC2)
+I (C:\Keil_v5\ARM\ARMCC\include\stdlib.h)(0x5E8E3CC2)
+I (C:\Keil_v5\ARM\ARMCC\include\stdarg.h)(0x5E8E3CC2)
+I (C:\Keil_v5\ARM\ARMCC\include\string.h)(0x5E8E3CC2)
+I (..\Src\BSP\MCU\TM4C123GH6PM7.h)(0x60D1649E)
+I (C:\Users\User\AppData\Local\Arm\Packs\ARM\CMSIS\5.7.0\CMSIS\Core\Include\core_cm4.h)(0x5E8ED122)
+I (C:\Users\User\AppData\Local\Arm\Packs\ARM\CMSIS\5.7.0\CMSIS\Core\Include\cmsis_version.h)(0x5E8ED122)
+I (C:\Users\User\AppData\Local\Arm\Packs\ARM\CMSIS\5.7.0\CMSIS\Core\Include\cmsis_compiler.h)(0x5E8306C2)
+I (C:\Users\User\AppData\Local\Arm\Packs\ARM\CMSIS\5.7.0\CMSIS\Core\Include\cmsis_armcc.h)(0x5E8ED122)
+I (C:\Users\User\AppData\Local\Arm\Packs\ARM\CMSIS\5.7.0\CMSIS\Core\Include\mpu_armv7.h)(0x5E8ED122)
+I (..\Src\BSP\MCU\system_TM4C123.h)(0x60D1649E)
+I (..\Src\App\LCD\GUI.h)(0x60D16483)
+F (..\Src\App\LCD\fontarialbold12.c)(0x60D16483)(--c99 -c --cpu Cortex-M4.fp.sp -D__EVAL -g -O0 --apcs=interwork --split_sections -I ..\Src\BSP -I ..\Src\BSP\I2C -I ..\Src\BSP\MCU -I ..\Src\BSP\SPI -I ..\Src\App\LCD -I ..\Src\App\LED -I ..\Lib\Inc -I ..\Lib\TIMER-I.\RTE\_Debug-IC:\Users\User\AppData\Local\Arm\Packs\ARM\CMSIS\5.7.0\CMSIS\Core\Include-IC:\Users\User\AppData\Local\Arm\Packs\Keil\TM4C_DFP\1.1.0\Device\Include\TM4C123-D__UVISION_VERSION="534" -D_RTE_ -DTM4C123GH6PM -D_RTE_-o .\objects\fontarialbold12.o --omf_browse .\objects\fontarialbold12.crf --depend .\objects\fontarialbold12.d)
+I (..\Lib\Inc\Common.h)(0x60D16483)
+I (C:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x5E8E3CC2)
+I (C:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x5E8E3CC2)
+I (C:\Keil_v5\ARM\ARMCC\include\stdlib.h)(0x5E8E3CC2)
+I (C:\Keil_v5\ARM\ARMCC\include\stdarg.h)(0x5E8E3CC2)
+I (C:\Keil_v5\ARM\ARMCC\include\string.h)(0x5E8E3CC2)
+I (..\Src\BSP\MCU\TM4C123GH6PM7.h)(0x60D1649E)
+I (C:\Users\User\AppData\Local\Arm\Packs\ARM\CMSIS\5.7.0\CMSIS\Core\Include\core_cm4.h)(0x5E8ED122)
+I (C:\Users\User\AppData\Local\Arm\Packs\ARM\CMSIS\5.7.0\CMSIS\Core\Include\cmsis_version.h)(0x5E8ED122)
+I (C:\Users\User\AppData\Local\Arm\Packs\ARM\CMSIS\5.7.0\CMSIS\Core\Include\cmsis_compiler.h)(0x5E8306C2)
+I (C:\Users\User\AppData\Local\Arm\Packs\ARM\CMSIS\5.7.0\CMSIS\Core\Include\cmsis_armcc.h)(0x5E8ED122)
+I (C:\Users\User\AppData\Local\Arm\Packs\ARM\CMSIS\5.7.0\CMSIS\Core\Include\mpu_armv7.h)(0x5E8ED122)
+I (..\Src\BSP\MCU\system_TM4C123.h)(0x60D1649E)
+I (..\Src\App\LCD\GUI.h)(0x60D16483)
+F (..\Src\App\LCD\fontarialbold24.c)(0x60D16483)(--c99 -c --cpu Cortex-M4.fp.sp -D__EVAL -g -O0 --apcs=interwork --split_sections -I ..\Src\BSP -I ..\Src\BSP\I2C -I ..\Src\BSP\MCU -I ..\Src\BSP\SPI -I ..\Src\App\LCD -I ..\Src\App\LED -I ..\Lib\Inc -I ..\Lib\TIMER-I.\RTE\_Debug-IC:\Users\User\AppData\Local\Arm\Packs\ARM\CMSIS\5.7.0\CMSIS\Core\Include-IC:\Users\User\AppData\Local\Arm\Packs\Keil\TM4C_DFP\1.1.0\Device\Include\TM4C123-D__UVISION_VERSION="534" -D_RTE_ -DTM4C123GH6PM -D_RTE_-o .\objects\fontarialbold24.o --omf_browse .\objects\fontarialbold24.crf --depend .\objects\fontarialbold24.d)
+I (..\Lib\Inc\Common.h)(0x60D16483)
+I (C:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x5E8E3CC2)
+I (C:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x5E8E3CC2)
+I (C:\Keil_v5\ARM\ARMCC\include\stdlib.h)(0x5E8E3CC2)
+I (C:\Keil_v5\ARM\ARMCC\include\stdarg.h)(0x5E8E3CC2)
+I (C:\Keil_v5\ARM\ARMCC\include\string.h)(0x5E8E3CC2)
+I (..\Src\BSP\MCU\TM4C123GH6PM7.h)(0x60D1649E)
+I (C:\Users\User\AppData\Local\Arm\Packs\ARM\CMSIS\5.7.0\CMSIS\Core\Include\core_cm4.h)(0x5E8ED122)
+I (C:\Users\User\AppData\Local\Arm\Packs\ARM\CMSIS\5.7.0\CMSIS\Core\Include\cmsis_version.h)(0x5E8ED122)
+I (C:\Users\User\AppData\Local\Arm\Packs\ARM\CMSIS\5.7.0\CMSIS\Core\Include\cmsis_compiler.h)(0x5E8306C2)
+I (C:\Users\User\AppData\Local\Arm\Packs\ARM\CMSIS\5.7.0\CMSIS\Core\Include\cmsis_armcc.h)(0x5E8ED122)
+I (C:\Users\User\AppData\Local\Arm\Packs\ARM\CMSIS\5.7.0\CMSIS\Core\Include\mpu_armv7.h)(0x5E8ED122)
+I (..\Src\BSP\MCU\system_TM4C123.h)(0x60D1649E)
+I (..\Src\App\LCD\GUI.h)(0x60D16483)
+F (..\Src\BSP\BSP.c)(0x60D16484)(--c99 -c --cpu Cortex-M4.fp.sp -D__EVAL -g -O0 --apcs=interwork --split_sections -I ..\Src\BSP -I ..\Src\BSP\I2C -I ..\Src\BSP\MCU -I ..\Src\BSP\SPI -I ..\Src\App\LCD -I ..\Src\App\LED -I ..\Lib\Inc -I ..\Lib\TIMER-I.\RTE\_Debug-IC:\Users\User\AppData\Local\Arm\Packs\ARM\CMSIS\5.7.0\CMSIS\Core\Include-IC:\Users\User\AppData\Local\Arm\Packs\Keil\TM4C_DFP\1.1.0\Device\Include\TM4C123-D__UVISION_VERSION="534" -D_RTE_ -DTM4C123GH6PM -D_RTE_-o .\objects\bsp.o --omf_browse .\objects\bsp.crf --depend .\objects\bsp.d)
+I (..\Lib\Inc\Common.h)(0x60D16483)
+I (C:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x5E8E3CC2)
+I (C:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x5E8E3CC2)
+I (C:\Keil_v5\ARM\ARMCC\include\stdlib.h)(0x5E8E3CC2)
+I (C:\Keil_v5\ARM\ARMCC\include\stdarg.h)(0x5E8E3CC2)
+I (C:\Keil_v5\ARM\ARMCC\include\string.h)(0x5E8E3CC2)
+I (..\Src\BSP\MCU\TM4C123GH6PM7.h)(0x60D1649E)
+I (C:\Users\User\AppData\Local\Arm\Packs\ARM\CMSIS\5.7.0\CMSIS\Core\Include\core_cm4.h)(0x5E8ED122)
+I (C:\Users\User\AppData\Local\Arm\Packs\ARM\CMSIS\5.7.0\CMSIS\Core\Include\cmsis_version.h)(0x5E8ED122)
+I (C:\Users\User\AppData\Local\Arm\Packs\ARM\CMSIS\5.7.0\CMSIS\Core\Include\cmsis_compiler.h)(0x5E8306C2)
+I (C:\Users\User\AppData\Local\Arm\Packs\ARM\CMSIS\5.7.0\CMSIS\Core\Include\cmsis_armcc.h)(0x5E8ED122)
+I (C:\Users\User\AppData\Local\Arm\Packs\ARM\CMSIS\5.7.0\CMSIS\Core\Include\mpu_armv7.h)(0x5E8ED122)
+I (..\Src\BSP\MCU\system_TM4C123.h)(0x60D1649E)
+I (..\Src\BSP\Hal.h)(0x60D1649E)
+I (..\Src\BSP\BSP.h)(0x60D16484)
+F (..\Src\BSP\Hal.c)(0x60D16484)(--c99 -c --cpu Cortex-M4.fp.sp -D__EVAL -g -O0 --apcs=interwork --split_sections -I ..\Src\BSP -I ..\Src\BSP\I2C -I ..\Src\BSP\MCU -I ..\Src\BSP\SPI -I ..\Src\App\LCD -I ..\Src\App\LED -I ..\Lib\Inc -I ..\Lib\TIMER-I.\RTE\_Debug-IC:\Users\User\AppData\Local\Arm\Packs\ARM\CMSIS\5.7.0\CMSIS\Core\Include-IC:\Users\User\AppData\Local\Arm\Packs\Keil\TM4C_DFP\1.1.0\Device\Include\TM4C123-D__UVISION_VERSION="534" -D_RTE_ -DTM4C123GH6PM -D_RTE_-o .\objects\hal.o --omf_browse .\objects\hal.crf --depend .\objects\hal.d)
+I (..\Lib\Inc\Common.h)(0x60D16483)
+I (C:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x5E8E3CC2)
+I (C:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x5E8E3CC2)
+I (C:\Keil_v5\ARM\ARMCC\include\stdlib.h)(0x5E8E3CC2)
+I (C:\Keil_v5\ARM\ARMCC\include\stdarg.h)(0x5E8E3CC2)
+I (C:\Keil_v5\ARM\ARMCC\include\string.h)(0x5E8E3CC2)
+I (..\Src\BSP\MCU\TM4C123GH6PM7.h)(0x60D1649E)
+I (C:\Users\User\AppData\Local\Arm\Packs\ARM\CMSIS\5.7.0\CMSIS\Core\Include\core_cm4.h)(0x5E8ED122)
+I (C:\Users\User\AppData\Local\Arm\Packs\ARM\CMSIS\5.7.0\CMSIS\Core\Include\cmsis_version.h)(0x5E8ED122)
+I (C:\Users\User\AppData\Local\Arm\Packs\ARM\CMSIS\5.7.0\CMSIS\Core\Include\cmsis_compiler.h)(0x5E8306C2)
+I (C:\Users\User\AppData\Local\Arm\Packs\ARM\CMSIS\5.7.0\CMSIS\Core\Include\cmsis_armcc.h)(0x5E8ED122)
+I (C:\Users\User\AppData\Local\Arm\Packs\ARM\CMSIS\5.7.0\CMSIS\Core\Include\mpu_armv7.h)(0x5E8ED122)
+I (..\Src\BSP\MCU\system_TM4C123.h)(0x60D1649E)
+I (..\Src\BSP\Hal.h)(0x60D1649E)
+F (..\Src\BSP\IRQ.c)(0x60D1649E)(--c99 -c --cpu Cortex-M4.fp.sp -D__EVAL -g -O0 --apcs=interwork --split_sections -I ..\Src\BSP -I ..\Src\BSP\I2C -I ..\Src\BSP\MCU -I ..\Src\BSP\SPI -I ..\Src\App\LCD -I ..\Src\App\LED -I ..\Lib\Inc -I ..\Lib\TIMER-I.\RTE\_Debug-IC:\Users\User\AppData\Local\Arm\Packs\ARM\CMSIS\5.7.0\CMSIS\Core\Include-IC:\Users\User\AppData\Local\Arm\Packs\Keil\TM4C_DFP\1.1.0\Device\Include\TM4C123-D__UVISION_VERSION="534" -D_RTE_ -DTM4C123GH6PM -D_RTE_-o .\objects\irq.o --omf_browse .\objects\irq.crf --depend .\objects\irq.d)
+I (..\Lib\Inc\Common.h)(0x60D16483)
+I (C:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x5E8E3CC2)
+I (C:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x5E8E3CC2)
+I (C:\Keil_v5\ARM\ARMCC\include\stdlib.h)(0x5E8E3CC2)
+I (C:\Keil_v5\ARM\ARMCC\include\stdarg.h)(0x5E8E3CC2)
+I (C:\Keil_v5\ARM\ARMCC\include\string.h)(0x5E8E3CC2)
+I (..\Src\BSP\MCU\TM4C123GH6PM7.h)(0x60D1649E)
+I (C:\Users\User\AppData\Local\Arm\Packs\ARM\CMSIS\5.7.0\CMSIS\Core\Include\core_cm4.h)(0x5E8ED122)
+I (C:\Users\User\AppData\Local\Arm\Packs\ARM\CMSIS\5.7.0\CMSIS\Core\Include\cmsis_version.h)(0x5E8ED122)
+I (C:\Users\User\AppData\Local\Arm\Packs\ARM\CMSIS\5.7.0\CMSIS\Core\Include\cmsis_compiler.h)(0x5E8306C2)
+I (C:\Users\User\AppData\Local\Arm\Packs\ARM\CMSIS\5.7.0\CMSIS\Core\Include\cmsis_armcc.h)(0x5E8ED122)
+I (C:\Users\User\AppData\Local\Arm\Packs\ARM\CMSIS\5.7.0\CMSIS\Core\Include\mpu_armv7.h)(0x5E8ED122)
+I (..\Src\BSP\MCU\system_TM4C123.h)(0x60D1649E)
+I (..\Src\BSP\Hal.h)(0x60D1649E)
+I (..\Src\BSP\BSP.h)(0x60D16484)
+I (..\Src\BSP\IRQ.h)(0x60D1649E)
+F (..\Src\BSP\Hal.h)(0x60D1649E)()
+F (..\Src\BSP\IRQ.h)(0x60D1649E)()
+F (..\Src\BSP\BSP.h)(0x60D16484)()
+F (..\Src\BSP\retarget.c)(0x60D1649E)(--c99 -c --cpu Cortex-M4.fp.sp -D__EVAL -g -O0 --apcs=interwork --split_sections -I ..\Src\BSP -I ..\Src\BSP\I2C -I ..\Src\BSP\MCU -I ..\Src\BSP\SPI -I ..\Src\App\LCD -I ..\Src\App\LED -I ..\Lib\Inc -I ..\Lib\TIMER-I.\RTE\_Debug-IC:\Users\User\AppData\Local\Arm\Packs\ARM\CMSIS\5.7.0\CMSIS\Core\Include-IC:\Users\User\AppData\Local\Arm\Packs\Keil\TM4C_DFP\1.1.0\Device\Include\TM4C123-D__UVISION_VERSION="534" -D_RTE_ -DTM4C123GH6PM -D_RTE_-o .\objects\retarget.o --omf_browse .\objects\retarget.crf --depend .\objects\retarget.d)
+I (..\Lib\Inc\Common.h)(0x60D16483)
+I (C:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x5E8E3CC2)
+I (C:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x5E8E3CC2)
+I (C:\Keil_v5\ARM\ARMCC\include\stdlib.h)(0x5E8E3CC2)
+I (C:\Keil_v5\ARM\ARMCC\include\stdarg.h)(0x5E8E3CC2)
+I (C:\Keil_v5\ARM\ARMCC\include\string.h)(0x5E8E3CC2)
+I (..\Src\BSP\MCU\TM4C123GH6PM7.h)(0x60D1649E)
+I (C:\Users\User\AppData\Local\Arm\Packs\ARM\CMSIS\5.7.0\CMSIS\Core\Include\core_cm4.h)(0x5E8ED122)
+I (C:\Users\User\AppData\Local\Arm\Packs\ARM\CMSIS\5.7.0\CMSIS\Core\Include\cmsis_version.h)(0x5E8ED122)
+I (C:\Users\User\AppData\Local\Arm\Packs\ARM\CMSIS\5.7.0\CMSIS\Core\Include\cmsis_compiler.h)(0x5E8306C2)
+I (C:\Users\User\AppData\Local\Arm\Packs\ARM\CMSIS\5.7.0\CMSIS\Core\Include\cmsis_armcc.h)(0x5E8ED122)
+I (C:\Users\User\AppData\Local\Arm\Packs\ARM\CMSIS\5.7.0\CMSIS\Core\Include\mpu_armv7.h)(0x5E8ED122)
+I (..\Src\BSP\MCU\system_TM4C123.h)(0x60D1649E)
+I (..\Src\BSP\Hal.h)(0x60D1649E)
+F (..\Src\BSP\MCU\startup_TM4C123.s)(0x60D1649E)(--cpu Cortex-M4.fp.sp --pd "__EVAL SETA 1" -g --apcs=interwork -I.\RTE\_Debug-IC:\Users\User\AppData\Local\Arm\Packs\ARM\CMSIS\5.7.0\CMSIS\Core\Include-IC:\Users\User\AppData\Local\Arm\Packs\Keil\TM4C_DFP\1.1.0\Device\Include\TM4C123--pd "__UVISION_VERSION SETA 534" --pd "_RTE_ SETA 1" --pd "TM4C123GH6PM SETA 1" --pd "_RTE_ SETA 1"--list .\listings\startup_tm4c123.lst --xref -o .\objects\startup_tm4c123.o --depend .\objects\startup_tm4c123.d)
+F (..\Src\BSP\MCU\system_TM4C123.c)(0x60D1649E)(--c99 -c --cpu Cortex-M4.fp.sp -D__EVAL -g -O0 --apcs=interwork --split_sections -I ..\Src\BSP -I ..\Src\BSP\I2C -I ..\Src\BSP\MCU -I ..\Src\BSP\SPI -I ..\Src\App\LCD -I ..\Src\App\LED -I ..\Lib\Inc -I ..\Lib\TIMER-I.\RTE\_Debug-IC:\Users\User\AppData\Local\Arm\Packs\ARM\CMSIS\5.7.0\CMSIS\Core\Include-IC:\Users\User\AppData\Local\Arm\Packs\Keil\TM4C_DFP\1.1.0\Device\Include\TM4C123-D__UVISION_VERSION="534" -D_RTE_ -DTM4C123GH6PM -D_RTE_-o .\objects\system_tm4c123.o --omf_browse .\objects\system_tm4c123.crf --depend .\objects\system_tm4c123.d)
+I (C:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x5E8E3CC2)
+I (..\Src\BSP\MCU\TM4C123GH6PM7.h)(0x60D1649E)
+I (C:\Users\User\AppData\Local\Arm\Packs\ARM\CMSIS\5.7.0\CMSIS\Core\Include\core_cm4.h)(0x5E8ED122)
+I (C:\Users\User\AppData\Local\Arm\Packs\ARM\CMSIS\5.7.0\CMSIS\Core\Include\cmsis_version.h)(0x5E8ED122)
+I (C:\Users\User\AppData\Local\Arm\Packs\ARM\CMSIS\5.7.0\CMSIS\Core\Include\cmsis_compiler.h)(0x5E8306C2)
+I (C:\Users\User\AppData\Local\Arm\Packs\ARM\CMSIS\5.7.0\CMSIS\Core\Include\cmsis_armcc.h)(0x5E8ED122)
+I (C:\Users\User\AppData\Local\Arm\Packs\ARM\CMSIS\5.7.0\CMSIS\Core\Include\mpu_armv7.h)(0x5E8ED122)
+I (..\Src\BSP\MCU\system_TM4C123.h)(0x60D1649E)
+F (..\Src\BSP\SPI\spim.c)(0x60D1649E)(--c99 -c --cpu Cortex-M4.fp.sp -D__EVAL -g -O0 --apcs=interwork --split_sections -I ..\Src\BSP -I ..\Src\BSP\I2C -I ..\Src\BSP\MCU -I ..\Src\BSP\SPI -I ..\Src\App\LCD -I ..\Src\App\LED -I ..\Lib\Inc -I ..\Lib\TIMER-I.\RTE\_Debug-IC:\Users\User\AppData\Local\Arm\Packs\ARM\CMSIS\5.7.0\CMSIS\Core\Include-IC:\Users\User\AppData\Local\Arm\Packs\Keil\TM4C_DFP\1.1.0\Device\Include\TM4C123-D__UVISION_VERSION="534" -D_RTE_ -DTM4C123GH6PM -D_RTE_-o .\objects\spim.o --omf_browse .\objects\spim.crf --depend .\objects\spim.d)
+I (..\Lib\Inc\Common.h)(0x60D16483)
+I (C:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x5E8E3CC2)
+I (C:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x5E8E3CC2)
+I (C:\Keil_v5\ARM\ARMCC\include\stdlib.h)(0x5E8E3CC2)
+I (C:\Keil_v5\ARM\ARMCC\include\stdarg.h)(0x5E8E3CC2)
+I (C:\Keil_v5\ARM\ARMCC\include\string.h)(0x5E8E3CC2)
+I (..\Src\BSP\MCU\TM4C123GH6PM7.h)(0x60D1649E)
+I (C:\Users\User\AppData\Local\Arm\Packs\ARM\CMSIS\5.7.0\CMSIS\Core\Include\core_cm4.h)(0x5E8ED122)
+I (C:\Users\User\AppData\Local\Arm\Packs\ARM\CMSIS\5.7.0\CMSIS\Core\Include\cmsis_version.h)(0x5E8ED122)
+I (C:\Users\User\AppData\Local\Arm\Packs\ARM\CMSIS\5.7.0\CMSIS\Core\Include\cmsis_compiler.h)(0x5E8306C2)
+I (C:\Users\User\AppData\Local\Arm\Packs\ARM\CMSIS\5.7.0\CMSIS\Core\Include\cmsis_armcc.h)(0x5E8ED122)
+I (C:\Users\User\AppData\Local\Arm\Packs\ARM\CMSIS\5.7.0\CMSIS\Core\Include\mpu_armv7.h)(0x5E8ED122)
+I (..\Src\BSP\MCU\system_TM4C123.h)(0x60D1649E)
+I (C:\Keil_v5\ARM\ARMCC\include\math.h)(0x5E8E3CC2)
+I (..\Src\BSP\Hal.h)(0x60D1649E)
+I (..\Src\BSP\SPI\spim.h)(0x60D1649E)
+F (..\Src\BSP\SPI\spim.h)(0x60D1649E)()
+F (..\Src\BSP\I2C\i2c.h)(0x60D1649E)()
+F (..\Src\BSP\I2C\i2c_sensors.c)(0x60DD2865)(--c99 -c --cpu Cortex-M4.fp.sp -D__EVAL -g -O0 --apcs=interwork --split_sections -I ..\Src\BSP -I ..\Src\BSP\I2C -I ..\Src\BSP\MCU -I ..\Src\BSP\SPI -I ..\Src\App\LCD -I ..\Src\App\LED -I ..\Lib\Inc -I ..\Lib\TIMER-I.\RTE\_Debug-IC:\Users\User\AppData\Local\Arm\Packs\ARM\CMSIS\5.7.0\CMSIS\Core\Include-IC:\Users\User\AppData\Local\Arm\Packs\Keil\TM4C_DFP\1.1.0\Device\Include\TM4C123-D__UVISION_VERSION="534" -D_RTE_ -DTM4C123GH6PM -D_RTE_-o .\objects\i2c_sensors.o --omf_browse .\objects\i2c_sensors.crf --depend .\objects\i2c_sensors.d)
+I (..\Lib\Inc\Common.h)(0x60D16483)
+I (C:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x5E8E3CC2)
+I (C:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x5E8E3CC2)
+I (C:\Keil_v5\ARM\ARMCC\include\stdlib.h)(0x5E8E3CC2)
+I (C:\Keil_v5\ARM\ARMCC\include\stdarg.h)(0x5E8E3CC2)
+I (C:\Keil_v5\ARM\ARMCC\include\string.h)(0x5E8E3CC2)
+I (..\Src\BSP\MCU\TM4C123GH6PM7.h)(0x60D1649E)
+I (C:\Users\User\AppData\Local\Arm\Packs\ARM\CMSIS\5.7.0\CMSIS\Core\Include\core_cm4.h)(0x5E8ED122)
+I (C:\Users\User\AppData\Local\Arm\Packs\ARM\CMSIS\5.7.0\CMSIS\Core\Include\cmsis_version.h)(0x5E8ED122)
+I (C:\Users\User\AppData\Local\Arm\Packs\ARM\CMSIS\5.7.0\CMSIS\Core\Include\cmsis_compiler.h)(0x5E8306C2)
+I (C:\Users\User\AppData\Local\Arm\Packs\ARM\CMSIS\5.7.0\CMSIS\Core\Include\cmsis_armcc.h)(0x5E8ED122)
+I (C:\Users\User\AppData\Local\Arm\Packs\ARM\CMSIS\5.7.0\CMSIS\Core\Include\mpu_armv7.h)(0x5E8ED122)
+I (..\Src\BSP\MCU\system_TM4C123.h)(0x60D1649E)
+I (..\Src\BSP\BSP.h)(0x60D16484)
+I (..\Src\BSP\IRQ.h)(0x60D1649E)
+I (..\Src\BSP\I2C\i2c.h)(0x60D1649E)
+I (..\Src\BSP\I2C\i2c_sensors.h)(0x60D1649E)
+I (C:\Keil_v5\ARM\ARMCC\include\math.h)(0x5E8E3CC2)
+F (..\Src\BSP\I2C\i2c_sensors.h)(0x60D1649E)()
+F (..\Src\BSP\I2C\i2c.lib)(0x60D1649E)()
+F (..\Lib\TIMER\timer.h)(0x60D16483)()
+F (..\Lib\TIMER\timer.lib)(0x60D16483)()
+F (.\Lab Assignment.txt)(0x60D16483)()

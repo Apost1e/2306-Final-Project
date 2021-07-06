@@ -1,0 +1,21 @@
+--cpu=Cortex-M4.fp.sp
+".\objects\main.o"
+"..\Src\App\LCD\DPGUI_KEIL_CM4_V11.lib"
+".\objects\lcd_st7735r.o"
+".\objects\fontarialbold16.o"
+".\objects\fontarialbold12.o"
+".\objects\fontarialbold24.o"
+".\objects\bsp.o"
+".\objects\hal.o"
+".\objects\irq.o"
+".\objects\retarget.o"
+".\objects\startup_tm4c123.o"
+".\objects\system_tm4c123.o"
+".\objects\spim.o"
+".\objects\i2c_sensors.o"
+"..\Src\BSP\I2C\i2c.lib"
+"..\Lib\TIMER\timer.lib"
+--strict --scatter ".\Objects\SEM2306_Lab_Assignment.sct"
+--summary_stderr --info summarysizes --map --load_addr_map_info --xref --callgraph --symbols
+--info sizes --info totals --info unused --info veneers
+--list ".\Listings\SEM2306_Lab_Assignment.map" -o .\Objects\SEM2306_Lab_Assignment.axf
