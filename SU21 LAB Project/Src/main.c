@@ -179,6 +179,8 @@ static volatile int		g_BounceThresh = 0;
 static int						g_DebounceValue = 150;
 static volatile int numPos = 0;
 
+static volatile int 			_4DigitPin = 0;
+
 /** stepper motor   **/
 static volatile int   		g_nMotorCount = MOTOR_STEP_TIME;
 static volatile BOOL  		g_bmotor_move = FALSE;
@@ -190,6 +192,18 @@ static volatile BOOL g_bDirectional_Op = FALSE;
 /** Buttons 				**/
 static BOOL								SW1_Pressed = FALSE;  /* switch-pressed status  */
 static BOOL								SW2_Pressed = FALSE; 
+
+static volatile BOOL  		b_keyin = FALSE; //Keyed-in Digits (Set up Flag)
+static volatile int				KI_Digits_Counter = 0;	//Keyin Digits counter
+static volatile int				KI_Digits = 0;	//Keyed-in Digits (Set up)
+static int 								DoorStatus =	CW; //Keyed-in Digits (Set up)
+static volatile int				Validate_KI_Digits = 0;	//Keyed-in Digits (Unlocking and Locking of Door)
+static int 								Validate_DoorStatus =	CW; //Keyed-in Digits (Unlocking and Locking of Door)
+static volatile int				Tries = 5;	//Number of tries
+static volatile int				Tries_Counter = 0;	//Tryouts
+static volatile BOOL  		SetUpDone = FALSE;
+static unsigned char 			g_BackSpaceKey = 0;
+
 
 /*****************************************************************************
  Callbacks Prototypes
@@ -252,7 +266,7 @@ int main()
 				write_I2CExpander(&g_I2C0Handle, &g_MCP23017);			/* Updates displayed value */
 		}
 		
-		if(g_n7SegCount > 99) g_n7SegCount = 99; 								/* Prevents overcounting outside of 99*/
+		//if(g_n7SegCount > 99) g_n7SegCount = 99; 								/* Prevents overcounting outside of 99*/
 		
 		if( FALSE != g_bSystemTick1000 )
     {
@@ -273,15 +287,7 @@ int main()
 			}
 		}
 		
-		/* Set Mode must be outside 1 second loop for quick update */
-		if(g_MCP23017.Mode == SET&& !g_bInitialState)										/* Check for Set Mode */
-			{
-				g_MCP23017.Digit1 = LCD_Count( g_n7SegCount/10 );		/* Stores the first value which is in multiples of 10 */
-				g_MCP23017.Digit2 = LCD_Count( g_n7SegCount%10 );		/* Stores the remainder of divide by 10 (modulo) */
-				
-				write_I2CExpander(&g_I2C0Handle, &g_MCP23017);			/* Updates displayed value */		
-			}
-			
+	
 		if( FALSE != g_bLCDUpdate )
 		{
 			if( 0 != g_bLcdFree )
@@ -340,12 +346,14 @@ int main()
 				}
 			}
 		}
-		
+	
 		if( FALSE != g_nKeypadScan )
 		{
 			g_nKeypadScan = FALSE;
 			main_KeyScan();
 		}
+	
+		
 	
 	}
 	
@@ -383,19 +391,20 @@ void SysTick_Handler( void )
 	}
 	
 	/* Buzzer Flag */
-	if(g_nBuzzerOFFCountDn == 0 && !g_bBuzzerON) /* Turns off Buzzer when Counter hits 0 and Flag is false */
+	/*
+	if(g_nBuzzerOFFCountDn == 0 && !g_bBuzzerON) // Turns off Buzzer when Counter hits 0 and Flag is false 
 		{
 
 			BUZZER_SET (g_bBuzzerON);								
 		}
 		if(g_bBuzzerON)
 		{	
-			BUZZER_SET ( g_bBuzzerON );								/* Turns on Buzzer */
-			g_bBuzzerON = FALSE;											/* Sets flag to False */
-			g_nBuzzerOFFCountDn = SHORT_BEEP;					/* Count down duration */
+			BUZZER_SET ( g_bBuzzerON );								//Turns on Buzzer 
+			g_bBuzzerON = FALSE;											//Sets flag to False 
+			g_nBuzzerOFFCountDn = SHORT_BEEP;					//Count down duration 
 			
 		}
-		
+	*/
   if (g_nCount == 1000)
   {
     g_bSecTick = TRUE;
@@ -434,6 +443,7 @@ void SysTick_Handler( void )
 	}
 	
 	/** Motor flag																	**/
+	/*
 	if (0 != g_nMotorCount)
 	{
 		g_nMotorCount--;
@@ -443,6 +453,7 @@ void SysTick_Handler( void )
 			g_nMotorCount = MOTOR_STEP_TIME;
 		}		
 	}
+	*/
 	
 }
 
@@ -470,22 +481,44 @@ void GUI_AppDraw( BOOL bFrameStart )
 	sprintf( buf, "COUNT: %d", g_n7SegCount);
 	GUI_PrintString( buf, ClrDarkBlue, 10, 84);
 	
-	if (g_MCP23017.Mode == SET)
-		sprintf( buf, "MODE : SET");
-	else if (g_MCP23017.Mode == COUNT_DOWN)
-		sprintf( buf, "MODE : DOWN");
-	else if (g_MCP23017.Mode == STOP)
-		sprintf( buf, "MODE : STOP");
-	GUI_PrintString( buf, ClrDarkBlue, 10, 96);
+	//Setup
 	
-	GUI_SetFont( &FONT_Arialbold12 );
-	sprintf( buf, "Turn Angle: %i", motor_angle);
-	GUI_PrintString( buf, ClrBlack, 15, 108 );
-	if (Rotation == CW)
-		sprintf( buf, "Rotation: CW");
-	else if (Rotation == ACW)
-		sprintf( buf, "Rotation: ACW");
-	GUI_PrintString( buf, ClrBlack, 15, 120 );
+		GUI_SetFont( &FONT_Arialbold12 );
+		sprintf( buf, "Pin Entered %i", KI_Digits);
+		GUI_PrintString( buf, ClrBlack, 15, 108 );
+		if (SetUpDone == FALSE)
+		{
+		sprintf( buf, "Setup Failed");
+		GUI_PrintString( buf, ClrBlack, 15, 120 );
+		}
+		else
+		{
+			sprintf( buf, "Setup is Done"); 
+			GUI_PrintString( buf, ClrBlack, 15, 120 );
+		}
+		
+	
+	/*
+	if(b_keyin == TRUE)
+	{
+		GUI_SetFont( &FONT_Arialbold12 );
+		sprintf( buf, "Pin Entered %i", Validate_KI_Digits);
+		GUI_PrintString( buf, ClrBlack, 15, 108 );
+		sprintf( buf, "Door is Currently Locked"); 
+		GUI_PrintString( buf, ClrBlack, 15, 120 );
+	}
+
+	//Pins Matched	/*
+	if(Validate_KI_Digits == KI_Digits && Validate_DoorStatus == DoorStatus)
+	{
+		GUI_PrintString( buf, ClrBlack, 15, 108 );
+		if (Validate_DoorStatus == CW && g_bDirectional_Op ==TRUE)
+		sprintf( buf, "Door is Locked");
+		else if (Validate_DoorStatus == ACW && g_bDirectional_Op == TRUE)
+		sprintf( buf, "Door is Unlocked");
+		GUI_PrintString( buf, ClrBlack, 15, 120 );
+	}
+*/
 	
 	GUI_SetColor( ClrLightCyan );
 	GUI_DrawFilledRect( 0, 140, 127, 159);
@@ -585,95 +618,94 @@ uint8_t LCD_Count ( uint16_t count )		/* Switch case for 7 segment display */
 
 
 
-static void main_KeyScan( void )
-{
-  int nRow, nCol, input;
-  static BOOL bKeyPressed = FALSE;
+	static void main_KeyScan( void )
+	{
+		int nRow, nCol, input;
+		static BOOL bKeyPressed = FALSE;
+
 	
+	
+			//Start up and User keys in the pin number
+			KEYPAD_ALL_ROWS_ON();
 
-  /* Set all rows to high so that if any key is pressed, 
-     a falling edge on the column line can be detected */
-  KEYPAD_ALL_ROWS_ON();
-
-  for( nRow=0; nRow<4; nRow++ )
-  {
-    /* Pull row by row low to determined which button is pressed */
-    KEPAD_ROW_MASKED &= ~(1U << nRow);
+			for( nRow=0; nRow<4; nRow++ )
+			{
+				/* Pull row by row low to determined which button is pressed */
+				KEPAD_ROW_MASKED &= ~(1U << nRow);
 		
-    /* Short delay to stabalize row that has just been pulled low */
-    __nop(); __nop(); __nop();
+				/* Short delay to stabalize row that has just been pulled low */
+				__nop(); __nop(); __nop();
 		
-    /* Read input */
-    input = KEYPAD_COL_IN();	
+				/* Read input */
+				input = KEYPAD_COL_IN();	
 		
-		if(input!=0x07)																//If any bit is pulled low
+				if(input!=0x07)																//If any bit is pulled low
+				{
+					if( input == 0x06 ) 									//If Bit 0 (Col 0) is pulled low 
 					{
-							if( input == 0x06 ) 									//If Bit 0 (Col 0) is pulled low 
-					{
-							g_cKey = KEY_DECODE_TABLE[nRow][0];	//Update g_cKey
-							
+						g_cKey = KEY_DECODE_TABLE[nRow][0];	//Update g_cKey	
 					}
 					else if( input == 0x05 ) 								//If Bit 1 (Col 1) is pulled low 
 					{    
-							g_cKey = KEY_DECODE_TABLE[nRow][1];	//Update g_cKey
+						g_cKey = KEY_DECODE_TABLE[nRow][1];	//Update g_cKey
 					}
 					else if( input == 0x03 ) 								//If Bit 2 (Col 2) is pulled low 
 					{
-							g_cKey = KEY_DECODE_TABLE[nRow][2];	//Update g_cKey
+						g_cKey = KEY_DECODE_TABLE[nRow][2];	//Update g_cKey
 					}
-							g_bKeyPressed = TRUE;								//Change Flag to True
-							bKeyPressed = TRUE;
-							break;
-					}
+						g_bKeyPressed = TRUE;								//Change Flag to True
+						bKeyPressed = TRUE;
+						break;
+				}
 						
-    /* If a column is asserted, then look for the corresponding key 
-       Make use of the KEY_DECODE_TABLE, exit loop once key found!  */	
-  }
-	
-			if( numPos < 4 && !g_bKeyPressed)  /* Data in managed in 2 parts, checking for rotational direction, then saving the turn angle */
-      {  
-        if(bKeyPressed)									/* local variable is used to prevent multiple inputs while the key is being held down */
-        {
-          bKeyPressed = FALSE;
-
-					/* If else statement to set direction and start motor */					
-					if( g_cKey == '*')						
-          {
-						Rotation = ACW;
-						numPos=4;
-						steps = (int)(motor_angle * 1024/360);
-						g_bDirectional_Op = TRUE;
-          }
-          else if( g_cKey == '#')
-          {
-						Rotation = CW;
-						numPos = 4;
-						steps = (int)(motor_angle * 1024/360);
-						g_bDirectional_Op = TRUE;
-          }
-					
-					/* Handles the numerical data meant for motor angle*/
-          if(numPos <3) 															/* While number is less than 3 digits*/
-          {
-            if( g_cKey != '#' && g_cKey != '*')				/* Guard statement*/
-            {
-              motor_angle*=10;												/* Shifts the numbers left in decimal form (factor 10)*/
-              motor_angle += g_cKey;									/* Adds current value to angle */
-              numPos++;																/* Tracks current digit length */
-            }
-						if(motor_angle > 720) {motor_angle = 720;}/* Guard statement to prevent value from exceeding 720, setting any input above 720 to max value*/
-          }
-        }
-      }
-			
-  /* Check if key is released */
-	if(input == 0x07)
+				/* If a column is asserted, then look for the corresponding key 
+				Make use of the KEY_DECODE_TABLE, exit loop once key found!  */	
+			}
+		
+				if( KI_Digits_Counter < 5 && !g_bKeyPressed )  /* Data in managed in 2 parts, checking for rotational direction, then saving the turn angle */
+				{  
+					if(bKeyPressed)									/* local variable is used to prevent multiple inputs while the key is being held down */
 					{
-						g_bKeyPressed = FALSE;						//Change Flag to False
+						bKeyPressed = FALSE;
 						
+						//BackSpace
+						if(g_cKey == '*')
+						{
+							KI_Digits_Counter--;
+									
+							if(KI_Digits_Counter >= 0)
+							{
+								KI_Digits/=10;
+							}
+							
+						}
+						
+						if( KI_Digits_Counter < 4)
+						{
+							if( g_cKey != '#' && g_cKey != '*')				/* Guard statement*/
+							{
+							KI_Digits*=10;												/* Shifts the numbers left in decimal form (factor 10)*/
+							KI_Digits += g_cKey;									/* Adds current value to angle */
+							KI_Digits_Counter++;									/* Tracks current digit length */
+							}
+						}
+					
+								
 					}
-  /* Reset all rows for next key detection */
-  KEYPAD_ALL_ROWS_OFF();
+				}
+				
+				b_keyin = TRUE;//Flag to state that setup pin is Done
+				
+				
+				/* Check if key is released */
+				if(input == 0x07)
+				{
+					g_bKeyPressed = FALSE;						//Change Flag to False		
+				}
+			
+				/* Reset all rows for next key detection */
+				KEYPAD_ALL_ROWS_OFF();
+			
 }
 
 void motor_output (int state)
@@ -688,29 +720,16 @@ void GPIOF_Button_IRQHandler( uint32_t Status )
 {
 	if( 0 != (Status & BIT(PF_SW2 ) ))
 		{
-			if(g_MCP23017.Mode != COUNT_DOWN)		/* SW2 is simply supposed to trigger Count Down mode only */
-			{
-				g_MCP23017.Mode = COUNT_DOWN;
-			}
-		motor_angle = 0;					/* Not written in slides how exactly to reset turning angle, so I used SW2 as a manual interrupt instead of coding an automatic reset */
-		numPos = 0;
-				
+			KI_Digits_Counter = 0;
+			KI_Digits = 0;
 		}
 		if( 0 != (Status & BIT(PF_SW1) ))
 	{
 		if(g_debounce <= 0)
 		{
 			g_debounce = 150;
-			if(g_MCP23017.Mode == SET || g_MCP23017.Mode == STOP)		/* If not Count Down Mode */
-			{
-				g_bInitialState = FALSE;
-				g_MCP23017.Mode = SET;																/* Changes to Set Mode */
-				++g_n7SegCount;																				/* Increments 7 Segement Counter */
-			}
-			if(g_MCP23017.Mode == COUNT_DOWN)												/* Stops Counter if in Count Down Mode */
-			{
-				g_MCP23017.Mode = STOP;
-			}
+			SetUpDone = TRUE;
+			
 		}
 	}
 	GPIOF->ICR |= BIT(PF_SW1)|BIT(PF_SW2); /* clear intr  */	
