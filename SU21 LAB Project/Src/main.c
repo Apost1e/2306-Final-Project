@@ -352,6 +352,14 @@ int main()
 			main_KeyScan();
 		}
 	}
+	else
+	{
+		if( FALSE != g_nKeypadScan )
+		{
+			g_nKeypadScan = FALSE;
+			main_KeyScan();
+		}
+	}
 	
 	
 		
@@ -691,7 +699,8 @@ uint8_t LCD_Count ( uint16_t count )		/* Switch case for 7 segment display */
 					}
 				}
 		}
-	
+		else //Unlock and Lock
+		{
 			if( numPos < 5 && !g_bKeyPressed )  /* Data in managed in 2 parts, checking for rotational direction, then saving the turn angle */
 			{  
 				if(bKeyPressed)									/* local variable is used to prevent multiple inputs while the key is being held down */
@@ -723,7 +732,7 @@ uint8_t LCD_Count ( uint16_t count )		/* Switch case for 7 segment display */
 								
 				}
 			}
-		
+		}
 							
 				/* Check if key is released */
 			if(input == 0x07)
@@ -732,7 +741,15 @@ uint8_t LCD_Count ( uint16_t count )		/* Switch case for 7 segment display */
 			}
 			/* Reset all rows for next key detection */
 			KEYPAD_ALL_ROWS_OFF();
-					
+				
+				/* Check if key is released */
+				if(input == 0x07)
+				{
+					g_bKeyPressed = FALSE;						//Change Flag to False		
+				}
+			
+				/* Reset all rows for next key detection */
+				KEYPAD_ALL_ROWS_OFF();		
 }
 
 void motor_output (int state)
