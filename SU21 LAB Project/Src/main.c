@@ -764,7 +764,7 @@ uint8_t LCD_Count ( uint16_t count )		/* Switch case for 7 segment display */
 		}
 		else //Unlock and Lock
 		{
-				if( numPos < numPos_Counter + 1 && !g_bKeyPressed )  /* Data in managed in 2 parts, checking for rotational direction, then saving the turn angle */
+				if( numPos < 6 && !g_bKeyPressed )  /* Data in managed in 2 parts, checking for rotational direction, then saving the turn angle */
 				{  
 					if(bKeyPressed)									/* local variable is used to prevent multiple inputs while the key is being held down */
 					{
@@ -785,8 +785,8 @@ uint8_t LCD_Count ( uint16_t count )		/* Switch case for 7 segment display */
 						{
 							DoorStatus = g_cKey; //# to unlock
 						}
-						//4 Digits 
-						if( numPos < numPos_Counter )
+						//4 Digits (Security measures to not allow hackers know how many digits there are so allow them to key in)
+						if( numPos < 4 )
 						{
 							if( g_cKey != '#' && g_cKey != '*')				/* Guard statement*/
 							{
