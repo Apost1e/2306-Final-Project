@@ -33,7 +33,8 @@
 #define KEYPAD_UPDATE_MS	50U
 #define BUZZER_MS					100U
 
-#define SHORT_BEEP					30U        /* short beep duration in ms  */
+#define SHORT_BEEP					100U        /* short beep duration in ms (For Wrong Pin Buzzer)  */
+#define Long_BEEP						500U        /* Long beep duration in ms (For Correct Pin Buzzer)  */
 #define I2C_UPDATE_MS				1000U
 #define AHT10_UPDATE_MS			5000U			/* for I21C module            */
 #define SW_DEBOUNCE_INTRV 	10U       /* SW debounce period in ms   */
@@ -152,9 +153,10 @@ static MCP23017 					g_MCP23017;												// data structure
 
 /** Buzzer     **/
 static volatile uint16_t	g_nBeep_Count = 0U;
-static volatile uint32_t 	g_nBuzzerONCountDn;
-static volatile uint32_t 	g_nBuzzerOFFCountDn;
+static volatile uint32_t 	g_nBuzzerONCountDn; //Correct Pin
+static volatile uint32_t 	g_nBuzzerOFFCountDn; //Wrong Pin Buzzer
 static volatile BOOL			g_bBuzzerON = FALSE;
+static volatile BOOL			PinCorrect_bBuzzerON = FALSE;
 
 /** I2c Expander     **/
 static volatile uint8_t	dig1 = 0;
@@ -194,13 +196,16 @@ static BOOL								SW1_Pressed = FALSE;  /* switch-pressed status  */
 static BOOL								SW2_Pressed = FALSE; 
 
 static volatile int				KI_Digits_Counter = 0;	//Keyin Digits counter
+static volatile int				numPos_Counter = 0;	//Keyin Digits counter
 static volatile int				KI_Digits = 0;	//Keyed-in Digits (Set up)
-static volatile int				DoorStatus = '*';	//Keyed-in Digits (Contain *(Locked) or #(Unlocked))
+static volatile int				DoorStatus = 0;	//Keyed-in Digits (Contain *(Locked) or #(Unlocked))
 static volatile int				Validate_KI_Digits = 0;	//Keyed-in Digits (Unlocking and Locking of Door)
 static volatile int				Tries = 6;	//Number of tries
 static volatile int				Tries_Counter = 0;	//Tryouts
 static volatile BOOL  		SetUpDone = FALSE;
 static volatile BOOL  		CorrectPin = FALSE;
+static volatile BOOL  		WrongPin = FALSE;
+static volatile int				Reset_Counter = 1;	
 
 
 /*****************************************************************************
@@ -378,10 +383,20 @@ void SysTick_Handler( void )
 		
 	/* Provide system tick */
   g_nCount++;
-	g_nBuzzerOFFCountDn--;
+	g_nBuzzerOFFCountDn--; //Wrong Pin Buzzzer Counter
+	g_nBuzzerONCountDn--; //Correct Pin Buzzer Counter
 	g_debounce--;
 	g_nAHT10Delay--;
 	g_nAHT10Update--;
+	Reset_Counter++;
+	
+	//After Pin Correct(10s to reset back and Door Auto Locks by itself)
+	if(Reset_Counter >= 10000)//10s
+	{
+		Validate_KI_Digits = 0;
+		numPos = 0;
+		CorrectPin = FALSE;
+	}
 	
 	/* LED */
 	if(g_nCount >= 100)
@@ -400,11 +415,9 @@ void SysTick_Handler( void )
 		g_bAHT10Read = TRUE;
 	}
 	
-	/* Buzzer Flag */
-	/*
+	/* Buzzer Flag (Wrong Pin)*/
 	if(g_nBuzzerOFFCountDn == 0 && !g_bBuzzerON) // Turns off Buzzer when Counter hits 0 and Flag is false 
 		{
-
 			BUZZER_SET (g_bBuzzerON);								
 		}
 		if(g_bBuzzerON)
@@ -414,7 +427,19 @@ void SysTick_Handler( void )
 			g_nBuzzerOFFCountDn = SHORT_BEEP;					//Count down duration 
 			
 		}
-	*/
+	/* Buzzer Flag (Correct Pin)*/
+	if(g_nBuzzerONCountDn == 0 && !PinCorrect_bBuzzerON) // Turns off Buzzer when Counter hits 0 and Flag is false 
+		{
+			BUZZER_SET (PinCorrect_bBuzzerON);								
+		}
+		if(PinCorrect_bBuzzerON)
+		{	
+			BUZZER_SET ( PinCorrect_bBuzzerON );		//Turns on Buzzer 
+			PinCorrect_bBuzzerON = FALSE;						//Sets flag to False 
+			g_nBuzzerONCountDn = Long_BEEP;					//Count down duration 
+			
+		}
+	
   if (g_nCount == 1000)
   {
     g_bSecTick = TRUE;
@@ -505,11 +530,14 @@ void GUI_AppDraw( BOOL bFrameStart )
 	//After Setup
 	if(SetUpDone == TRUE && CorrectPin ==FALSE)
 	{
-		GUI_SetFont( &FONT_Arialbold12 );
-		sprintf( buf, "Pin Entered %i", Validate_KI_Digits);
-		GUI_PrintString( buf, ClrBlack, 15, 108 );
-		sprintf( buf, "Door is Currently Locked"); 
-		GUI_PrintString( buf, ClrBlack, 15, 120 );
+		if(WrongPin == FALSE)
+		{
+			GUI_SetFont( &FONT_Arialbold12 );
+			sprintf( buf, "Pin Entered %i", Validate_KI_Digits);
+			GUI_PrintString( buf, ClrBlack, 15, 108 );
+			sprintf( buf, "Door is Currently Locked"); 
+			GUI_PrintString( buf, ClrBlack, 15, 120 );
+		}
 	}
 	
 	if(SetUpDone == TRUE && CorrectPin == TRUE)
@@ -519,13 +547,22 @@ void GUI_AppDraw( BOOL bFrameStart )
 			sprintf( buf, "Door is  Unlocked"); 
 			GUI_PrintString( buf, ClrBlack, 15, 120 );
 		}
-		else if(DoorStatus == '*')
+		else 
 		{
 			sprintf( buf, "Door is  Locked"); 
 			GUI_PrintString( buf, ClrBlack, 15, 120 );
 		}
 		
 	}
+	else if(SetUpDone == TRUE && WrongPin == TRUE)
+	{
+		GUI_SetFont( &FONT_Arialbold12 );
+		sprintf( buf, "Pin Entered %i", Validate_KI_Digits);
+		GUI_PrintString( buf, ClrBlack, 15, 108 );
+		sprintf( buf, "Wrong Pin"); 
+		GUI_PrintString( buf, ClrBlack, 15, 120 );
+	}
+
 	
 	/*
 	//Pins Matched	
@@ -708,6 +745,7 @@ uint8_t LCD_Count ( uint16_t count )		/* Switch case for 7 segment display */
 								KI_Digits*=10;												/* Shifts the numbers left in decimal form (factor 10)*/
 								KI_Digits += g_cKey;									/* Adds current value to angle */
 								KI_Digits_Counter++;									/* Tracks current digit length */
+								numPos_Counter = KI_Digits_Counter;
 							}
 						}	
 					}
@@ -715,7 +753,7 @@ uint8_t LCD_Count ( uint16_t count )		/* Switch case for 7 segment display */
 		}
 		else //Unlock and Lock
 		{
-				if( numPos < 6 && !g_bKeyPressed )  /* Data in managed in 2 parts, checking for rotational direction, then saving the turn angle */
+				if( numPos < numPos_Counter + 1 && !g_bKeyPressed )  /* Data in managed in 2 parts, checking for rotational direction, then saving the turn angle */
 				{  
 					if(bKeyPressed)									/* local variable is used to prevent multiple inputs while the key is being held down */
 					{
@@ -732,12 +770,12 @@ uint8_t LCD_Count ( uint16_t count )		/* Switch case for 7 segment display */
 							}
 							
 						}
-						if( numPos == 4)
+						if( numPos == numPos_Counter)
 						{
 							DoorStatus = g_cKey; //# to unlock
 						}
 						//4 Digits 
-						if( numPos < 4)
+						if( numPos < numPos_Counter )
 						{
 							if( g_cKey != '#' && g_cKey != '*')				/* Guard statement*/
 							{
@@ -789,6 +827,7 @@ void GPIOF_Button_IRQHandler( uint32_t Status )
 			Validate_KI_Digits = 0;
 			SetUpDone = FALSE;
 			CorrectPin = FALSE;
+			g_bBuzzerON = FALSE; 
 		}
 	//Setup
 	if( 0 != (Status & BIT(PF_SW1) && SetUpDone == FALSE ))
@@ -808,14 +847,20 @@ void GPIOF_Button_IRQHandler( uint32_t Status )
 			//See if pins are matched
 			if(Validate_KI_Digits == KI_Digits) 
 			{
+				PinCorrect_bBuzzerON = TRUE;
 				CorrectPin = TRUE; //Setup to print door is locked or unlock
+				WrongPin = FALSE; //Correct Pin
+				Reset_Counter = 0;
 			}
 			else
 			{
 				//Reset for the next try
+				WrongPin = TRUE;
+				g_bBuzzerON = TRUE; //Short Beep to indicate it is wrong
 				numPos = 0;
 				Validate_KI_Digits = 0;
 				Tries_Counter++;
+				
 //				if(Tries_Counter >= Tries)
 //				{
 //					
