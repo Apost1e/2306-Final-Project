@@ -202,11 +202,12 @@ static volatile int				DoorStatus = 0;	//Keyed-in Digits (Contain *(Locked) or #
 static volatile int				Validate_KI_Digits = 0;	//Keyed-in Digits (Unlocking and Locking of Door)
 static volatile int				Tries = 6;	//Number of tries
 static volatile int				Tries_Counter = 0;	//Tryouts
-static volatile BOOL  		SetUpDone = FALSE;
-static volatile BOOL  		CorrectPin = FALSE;
-static volatile BOOL  		WrongPin = FALSE;
-static volatile int				Reset_Counter = 1;	
-
+static volatile BOOL  		SetUpDone = FALSE; //Set-up Flag
+static volatile BOOL  		CorrectPin = FALSE; //Correct pin Flag
+static volatile BOOL  		WrongPin = FALSE;		//Wrong pin Flag
+static volatile int				Reset_Counter = 1;	//Couter for Reset
+static volatile BOOL  		ResetFlag = FALSE; //After Key-in to Reset (Systick)
+static volatile BOOL  		KeyInFlag = FALSE;	//After Key-in to Reset (Keypad Reset)
 
 /*****************************************************************************
  Callbacks Prototypes
@@ -366,9 +367,12 @@ int main()
 			main_KeyScan();
 		}
 	}
-	
-	
-		
+	//For Reset
+	if(KeyInFlag == TRUE)
+	{
+		KeyInFlag = FALSE;
+		main_KeyScan();
+	}	
 	
 	}
 	
@@ -388,15 +392,22 @@ void SysTick_Handler( void )
 	g_debounce--;
 	g_nAHT10Delay--;
 	g_nAHT10Update--;
-	Reset_Counter++;
+	
 	
 	//After Pin Correct(10s to reset back and Door Auto Locks by itself)
-	if(Reset_Counter >= 10000)//10s
+	if(ResetFlag == TRUE)
 	{
-		Validate_KI_Digits = 0;
-		numPos = 0;
-		CorrectPin = FALSE;
+		Reset_Counter++;
+		if(Reset_Counter >= 2000)//2s
+		{
+			Validate_KI_Digits = 0;
+			numPos = 0;
+			CorrectPin = FALSE;
+			ResetFlag = FALSE;
+			KeyInFlag = TRUE;
+		}
 	}
+
 	
 	/* LED */
 	if(g_nCount >= 100)
@@ -535,7 +546,7 @@ void GUI_AppDraw( BOOL bFrameStart )
 			GUI_SetFont( &FONT_Arialbold12 );
 			sprintf( buf, "Pin Entered %i", Validate_KI_Digits);
 			GUI_PrintString( buf, ClrBlack, 15, 108 );
-			sprintf( buf, "Door is Currently Locked"); 
+			sprintf( buf, "Please Enter Pin"); 
 			GUI_PrintString( buf, ClrBlack, 15, 120 );
 		}
 	}
@@ -851,6 +862,7 @@ void GPIOF_Button_IRQHandler( uint32_t Status )
 				CorrectPin = TRUE; //Setup to print door is locked or unlock
 				WrongPin = FALSE; //Correct Pin
 				Reset_Counter = 0;
+				ResetFlag = TRUE;
 			}
 			else
 			{
