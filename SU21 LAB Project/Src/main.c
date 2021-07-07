@@ -195,6 +195,7 @@ static BOOL								SW2_Pressed = FALSE;
 
 static volatile int				KI_Digits_Counter = 0;	//Keyin Digits counter
 static volatile int				KI_Digits = 0;	//Keyed-in Digits (Set up)
+static volatile int				DoorStatus = '*';	//Keyed-in Digits (Contain *(Locked) or #(Unlocked))
 static volatile int				Validate_KI_Digits = 0;	//Keyed-in Digits (Unlocking and Locking of Door)
 static volatile int				Tries = 6;	//Number of tries
 static volatile int				Tries_Counter = 0;	//Tryouts
@@ -513,8 +514,17 @@ void GUI_AppDraw( BOOL bFrameStart )
 	
 	if(SetUpDone == TRUE && CorrectPin == TRUE)
 	{
-		sprintf( buf, "Door is  Unlocked"); 
-		GUI_PrintString( buf, ClrBlack, 15, 120 );
+		if(DoorStatus == '#')
+		{
+			sprintf( buf, "Door is  Unlocked"); 
+			GUI_PrintString( buf, ClrBlack, 15, 120 );
+		}
+		else if(DoorStatus == '*')
+		{
+			sprintf( buf, "Door is  Locked"); 
+			GUI_PrintString( buf, ClrBlack, 15, 120 );
+		}
+		
 	}
 	
 	/*
@@ -705,7 +715,7 @@ uint8_t LCD_Count ( uint16_t count )		/* Switch case for 7 segment display */
 		}
 		else //Unlock and Lock
 		{
-				if( numPos < 5 && !g_bKeyPressed )  /* Data in managed in 2 parts, checking for rotational direction, then saving the turn angle */
+				if( numPos < 6 && !g_bKeyPressed )  /* Data in managed in 2 parts, checking for rotational direction, then saving the turn angle */
 				{  
 					if(bKeyPressed)									/* local variable is used to prevent multiple inputs while the key is being held down */
 					{
@@ -721,6 +731,10 @@ uint8_t LCD_Count ( uint16_t count )		/* Switch case for 7 segment display */
 								Validate_KI_Digits/=10;
 							}
 							
+						}
+						if( numPos == 4)
+						{
+							DoorStatus = g_cKey; //# to unlock
 						}
 						//4 Digits 
 						if( numPos < 4)
