@@ -196,10 +196,10 @@ static BOOL								SW2_Pressed = FALSE;
 static volatile int				KI_Digits_Counter = 0;	//Keyin Digits counter
 static volatile int				KI_Digits = 0;	//Keyed-in Digits (Set up)
 static volatile int				Validate_KI_Digits = 0;	//Keyed-in Digits (Unlocking and Locking of Door)
-static volatile int				Tries = 5;	//Number of tries
+static volatile int				Tries = 6;	//Number of tries
 static volatile int				Tries_Counter = 0;	//Tryouts
 static volatile BOOL  		SetUpDone = FALSE;
-static unsigned char 			g_BackSpaceKey = 0;
+static volatile BOOL  		CorrectPin = FALSE;
 
 
 /*****************************************************************************
@@ -502,12 +502,18 @@ void GUI_AppDraw( BOOL bFrameStart )
 	}
 		
 	//After Setup
-	if(SetUpDone == TRUE)
+	if(SetUpDone == TRUE && CorrectPin ==FALSE)
 	{
 		GUI_SetFont( &FONT_Arialbold12 );
 		sprintf( buf, "Pin Entered %i", Validate_KI_Digits);
 		GUI_PrintString( buf, ClrBlack, 15, 108 );
 		sprintf( buf, "Door is Currently Locked"); 
+		GUI_PrintString( buf, ClrBlack, 15, 120 );
+	}
+	
+	if(SetUpDone == TRUE && CorrectPin == TRUE)
+	{
+		sprintf( buf, "Door is  Unlocked"); 
 		GUI_PrintString( buf, ClrBlack, 15, 120 );
 	}
 	
@@ -643,7 +649,7 @@ uint8_t LCD_Count ( uint16_t count )		/* Switch case for 7 segment display */
 				/* Read input */
 				input = KEYPAD_COL_IN();	
 		
-				if(input!=0x07)																//If any bit is pulled low
+				if(input!=0x07)													//If any bit is pulled low
 				{
 					if( input == 0x06 ) 									//If Bit 0 (Col 0) is pulled low 
 					{
@@ -693,45 +699,43 @@ uint8_t LCD_Count ( uint16_t count )		/* Switch case for 7 segment display */
 								KI_Digits += g_cKey;									/* Adds current value to angle */
 								KI_Digits_Counter++;									/* Tracks current digit length */
 							}
-						}
-					
-								
+						}	
 					}
 				}
 		}
 		else //Unlock and Lock
 		{
-			if( numPos < 5 && !g_bKeyPressed )  /* Data in managed in 2 parts, checking for rotational direction, then saving the turn angle */
-			{  
-				if(bKeyPressed)									/* local variable is used to prevent multiple inputs while the key is being held down */
-				{
-					bKeyPressed = FALSE;
+				if( numPos < 5 && !g_bKeyPressed )  /* Data in managed in 2 parts, checking for rotational direction, then saving the turn angle */
+				{  
+					if(bKeyPressed)									/* local variable is used to prevent multiple inputs while the key is being held down */
+					{
+						bKeyPressed = FALSE;
 						
-					//BackSpace
-					if(g_cKey == '*')
-					{
-						numPos--;
+						//BackSpace
+						if(g_cKey == '*')
+						{
+							numPos--;
 									
-						if(numPos >= 0)
-						{
-							Validate_KI_Digits/=10;
-						}
+							if(numPos >= 0)
+							{
+								Validate_KI_Digits/=10;
+							}
 							
-					}
-					//4 Digits 
-					if( numPos < 4)
-					{
-						if( g_cKey != '#' && g_cKey != '*')				/* Guard statement*/
+						}
+						//4 Digits 
+						if( numPos < 4)
 						{
-							Validate_KI_Digits*=10;									/* Shifts the numbers left in decimal form (factor 10)*/
-							Validate_KI_Digits += g_cKey;						/* Adds current value to angle */
-							numPos++;																/* Tracks current digit length */
+							if( g_cKey != '#' && g_cKey != '*')				/* Guard statement*/
+							{
+								Validate_KI_Digits*=10;									/* Shifts the numbers left in decimal form (factor 10)*/
+								Validate_KI_Digits += g_cKey;						/* Adds current value to angle */
+								numPos++;																/* Tracks current digit length */
+							}
 						}
 					}
-					
-								
 				}
-			}
+			
+			
 		}
 							
 				/* Check if key is released */
@@ -762,20 +766,52 @@ void motor_output (int state)
 ******************************************************************************/
 void GPIOF_Button_IRQHandler( uint32_t Status )
 {
+	//SW2 will be used for hard reset
 	if( 0 != (Status & BIT(PF_SW2 ) ))
 		{
 			KI_Digits_Counter = 0;
 			KI_Digits = 0;
+			numPos = 0;
+			Validate_KI_Digits = 0;
 			SetUpDone = FALSE;
+			CorrectPin = FALSE;
 		}
-		if( 0 != (Status & BIT(PF_SW1) ))
+	//Setup
+	if( 0 != (Status & BIT(PF_SW1) && SetUpDone == FALSE ))
 	{
 		if(g_debounce <= 0)
 		{
 			g_debounce = 150;
-			SetUpDone = TRUE;	
+			SetUpDone = TRUE;	//Flag for Setup
 		}
 	}
+	
+	//After Setup
+	if( 0 != (Status & BIT(PF_SW1) && SetUpDone == TRUE))
+	{
+		if(g_debounce <= 0)
+		{
+			//See if pins are matched
+			if(Validate_KI_Digits == KI_Digits) 
+			{
+				CorrectPin = TRUE; //Setup to print door is locked or unlock
+			}
+			else
+			{
+				//Reset for the next try
+				numPos = 0;
+				Validate_KI_Digits = 0;
+				Tries_Counter++;
+//				if(Tries_Counter >= Tries)
+//				{
+//					
+//				}
+			}
+			g_debounce = 150;
+		}
+	}
+	
+	
 	GPIOF->ICR |= BIT(PF_SW1)|BIT(PF_SW2); /* clear intr  */	
 }  /* GPIOF_Button_IRQHandler */
 
